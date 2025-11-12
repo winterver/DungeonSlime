@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="DungeonSlime/DungeonSlime.csproj" />
+  <Project Path="LaTaleDoujin/LaTaleDoujin.csproj" />
+  <Project Path="MonoGameLibrary/MonoGameLibrary.csproj" />
+</Solution>
