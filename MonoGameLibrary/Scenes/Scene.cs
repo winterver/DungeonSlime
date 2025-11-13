@@ -1,11 +1,50 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+
+using MonoGameLibrary.Input;
+using MonoGameLibrary.Audio;
 
 namespace MonoGameLibrary.Scenes;
 
 public abstract class Scene : IDisposable
 {
+    /// <summary>
+    /// Redirected to Core.Graphics
+    /// </summary>
+    public static GraphicsDeviceManager Graphics => Core.Graphics;
+
+    /// <summary>
+    /// Redirected to Core.GraphicsDevice
+    /// </summary>
+    public static GraphicsDevice GraphicsDevice => Core.GraphicsDevice;
+
+    /// <summary>
+    /// Redirected to Core.SpriteBatch
+    /// </summary>
+    public static SpriteBatch SpriteBatch => Core.SpriteBatch;
+
+    /// <summary>
+    /// Redirected to Core.Input
+    /// </summary>
+    public static InputManager Input => Core.Input;
+
+    /// <summary>
+    /// Redirected to Core.Audio
+    /// </summary>
+    public static AudioController Audio => Core.Audio;
+
+    /// <summary>
+    /// Redirected to Core.ExitOnEscape
+    /// </summary>
+    public static bool ExitOnEscape => Core.ExitOnEscape;
+
+    /// <summary>
+    /// Redirected to Core.ChangeScene()
+    /// </summary>
+    public static void ChangeScene(Scene next) => Core.ChangeScene(next);
+
     /// <summary>
     /// Gets the ContentManager used for loading scene-specific assets.
     /// </summary>
@@ -13,6 +52,7 @@ public abstract class Scene : IDisposable
     /// Assets loaded through this ContentManager will be automatically unloaded when this scene ends.
     /// </remarks>
     protected ContentManager Content { get; }
+
     /// <summary>
     /// Gets a value that indicates if the scene has been disposed of.
     /// </summary>
