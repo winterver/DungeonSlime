@@ -52,9 +52,3 @@
 #begin images/zoe-definition.xml
 /copy:images/zoe-definition.xml
 
-#begin images/zoe-mob-definition.xml
-/copy:images/zoe-mob-definition.xml
-
-#begin images/zoe-mob-definition2.xml
-/copy:images/zoe-mob-definition2.xml
-

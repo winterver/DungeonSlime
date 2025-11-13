@@ -42,28 +42,24 @@ public class Game1 : Core
     {
         TextureAtlas zoeAtlas = TextureAtlas.FromFile(Content, "images/zoe-definition.xml");
         _zoeNPC = zoeAtlas.CreateAnimatedSprite("zoe-npc-animation");
-
-        TextureAtlas zoeAtlas2 = TextureAtlas.FromFile(Content, "images/zoe-mob-definition.xml");
-        _zoeMobAnim1 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim1");
-        _zoeMobAnim2 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim2");
-        _zoeMobAnim3 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim3");
-        _zoeMobAnim4 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim4");
-        _zoeMobAnim5 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim5");
-        _zoeMobAnim6 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim6");
-        _zoeMobAnim7 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim7");
-        _zoeMobAnim8 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim8");
-        _zoeMobAnim9 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim9");
-        _zoeMobAnim10 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim10");
-        _zoeMobAnim11 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim11");
-        _zoeMobAnim12 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim12");
-        _zoeMobAnim13 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim13");
-        _zoeMobAnim14 = zoeAtlas2.CreateAnimatedSprite("zoe-mob-anim14");
-
-        TextureAtlas zoeAtlas3 = TextureAtlas.FromFile(Content, "images/zoe-mob-definition2.xml");
-        _zoeMob2Anim1 = zoeAtlas3.CreateAnimatedSprite("zoe-mob2-anim1");
-        _zoeMob2Anim2 = zoeAtlas3.CreateAnimatedSprite("zoe-mob2-anim2");
-        _zoeMob2Anim3 = zoeAtlas3.CreateAnimatedSprite("zoe-mob2-anim3");
-        _zoeMob2Anim4 = zoeAtlas3.CreateAnimatedSprite("zoe-mob2-anim4");
+        _zoeMobAnim1 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim1");
+        _zoeMobAnim2 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim2");
+        _zoeMobAnim3 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim3");
+        _zoeMobAnim4 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim4");
+        _zoeMobAnim5 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim5");
+        _zoeMobAnim6 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim6");
+        _zoeMobAnim7 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim7");
+        _zoeMobAnim8 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim8");
+        _zoeMobAnim9 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim9");
+        _zoeMobAnim10 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim10");
+        _zoeMobAnim11 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim11");
+        _zoeMobAnim12 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim12");
+        _zoeMobAnim13 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim13");
+        _zoeMobAnim14 = zoeAtlas.CreateAnimatedSprite("zoe-mob-anim14");
+        _zoeMob2Anim1 = zoeAtlas.CreateAnimatedSprite("zoe-mob2-anim1");
+        _zoeMob2Anim2 = zoeAtlas.CreateAnimatedSprite("zoe-mob2-anim2");
+        _zoeMob2Anim3 = zoeAtlas.CreateAnimatedSprite("zoe-mob2-anim3");
+        _zoeMob2Anim4 = zoeAtlas.CreateAnimatedSprite("zoe-mob2-anim4");
     }
 
     protected override void Update(GameTime gameTime)
