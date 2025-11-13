@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Gum.Managers;
 using Gum.DataTypes;
 using Gum.Wireframe;
 using Gum.Forms.Controls;
@@ -12,6 +13,7 @@ using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
+using DungeonSlime.UI;
 
 namespace DungeonSlime.Scenes;
 
@@ -65,10 +67,14 @@ public class GameScene : Scene
 
     // A reference to the resume button UI element so we can focus it
     // when the game is paused.
-    private Button _resumeButton;
+    private AnimatedButton _resumeButton;
 
     // The UI sound effect to play when a UI event is triggered.
     private SoundEffect _uiSoundEffect;
+    
+    // Reference to the texture atlas that we can pass to UI elements when they
+    // are created.
+    private TextureAtlas _atlas;
 
     public override void Initialize()
     {
@@ -113,14 +119,14 @@ public class GameScene : Scene
     public override void LoadContent()
     {
         // Create the texture atlas from the XML configuration file.
-        TextureAtlas atlas = TextureAtlas.FromFile(Core.Content, "images/atlas-definition.xml");
+        _atlas = TextureAtlas.FromFile(Core.Content, "images/atlas-definition.xml");
 
         // Create the slime animated sprite from the atlas.
-        _slime = atlas.CreateAnimatedSprite("slime-animation");
+        _slime = _atlas.CreateAnimatedSprite("slime-animation");
         _slime.Scale = new Vector2(4.0f, 4.0f);
 
         // Create the bat animated sprite from the atlas.
-        _bat = atlas.CreateAnimatedSprite("bat-animation");
+        _bat = _atlas.CreateAnimatedSprite("bat-animation");
         _bat.Scale = new Vector2(4.0f, 4.0f);
 
         // Create the tilemap from the XML configuration file.
@@ -158,18 +164,28 @@ public class GameScene : Scene
         _pausePanel.IsVisible = false;
         _pausePanel.AddToRoot();
 
-        var background = new ColoredRectangleRuntime();
+        TextureRegion backgroundRegion = _atlas.GetRegion("panel-background");
+
+        NineSliceRuntime background = new NineSliceRuntime();
         background.Dock(Dock.Fill);
-        background.Color = Color.DarkBlue;
+        background.Texture = backgroundRegion.Texture;
+        background.TextureAddress = TextureAddress.Custom;
+        background.TextureHeight = backgroundRegion.Height;
+        background.TextureLeft = backgroundRegion.SourceRectangle.Left;
+        background.TextureTop = backgroundRegion.SourceRectangle.Top;
+        background.TextureWidth = backgroundRegion.Width;
         _pausePanel.AddChild(background);
 
         var textInstance = new TextRuntime();
         textInstance.Text = "PAUSED";
+        textInstance.CustomFontFile = @"fonts/04b_30.fnt";
+        textInstance.UseCustomFont = true;
+        textInstance.FontScale = 0.5f;
         textInstance.X = 10f;
         textInstance.Y = 10f;
         _pausePanel.AddChild(textInstance);
 
-        _resumeButton = new Button();
+        _resumeButton = new AnimatedButton(_atlas);
         _resumeButton.Text = "RESUME";
         _resumeButton.Anchor(Anchor.BottomLeft);
         _resumeButton.Visual.X = 9f;
@@ -178,7 +194,7 @@ public class GameScene : Scene
         _resumeButton.Click += HandleResumeButtonClicked;
         _pausePanel.AddChild(_resumeButton);
 
-        var quitButton = new Button();
+        AnimatedButton quitButton = new AnimatedButton(_atlas);
         quitButton.Text = "QUIT";
         quitButton.Anchor(Anchor.BottomRight);
         quitButton.Visual.X = -9f;
@@ -194,8 +210,7 @@ public class GameScene : Scene
         // A UI interaction occurred, play the sound effect
         Core.Audio.PlaySoundEffect(_uiSoundEffect);
 
-        // Make the pause panel invisible to resume the game.
-        _pausePanel.IsVisible = false;
+        ResumeGame();
     }
 
     private void HandleQuitButtonClicked(object sender, EventArgs e)
@@ -212,6 +227,12 @@ public class GameScene : Scene
         // Ensure the UI is always updated
         GumService.Default.Update(gameTime);
 
+        // Check for keyboard input and handle it.
+        CheckKeyboardInput();
+
+        // Check for gamepad input and handle it.
+        CheckGamePadInput();
+
         // If the game is paused, do not continue
         if (_pausePanel.IsVisible)
         {
@@ -223,12 +244,6 @@ public class GameScene : Scene
 
         // Update the bat animated sprite.
         _bat.Update(gameTime);
-
-        // Check for keyboard input and handle it.
-        CheckKeyboardInput();
-
-        // Check for gamepad input and handle it.
-        CheckGamePadInput();
 
         // Creating a bounding circle for the slime.
         Circle slimeBounds = new Circle(
@@ -351,14 +366,12 @@ public class GameScene : Scene
         // If the escape key is pressed, pause the game.
         if (Core.Input.Keyboard.WasKeyJustPressed(Keys.Escape))
         {
-            PauseGame();
-            return;
+            TogglePause();
         }
 
-        // If the escape key is pressed, return to the title screen.
-        if (Core.Input.Keyboard.WasKeyJustPressed(Keys.Escape))
+        if (_pausePanel.IsVisible)
         {
-            Core.ChangeScene(new TitleScene());
+            return;
         }
 
         // If the space key is held down, the movement speed increases by 1.5
@@ -421,7 +434,11 @@ public class GameScene : Scene
         // If the start button is pressed, pause the game
         if (gamePadOne.WasButtonJustPressed(Buttons.Start))
         {
-            PauseGame();
+            TogglePause();
+        }
+
+        if (_pausePanel.IsVisible)
+        {
             return;
         }
 
@@ -472,6 +489,20 @@ public class GameScene : Scene
                 _slimePosition.X += speed;
             }
         }
+    }
+
+    private void TogglePause()
+    {
+        if (_pausePanel.IsVisible)
+            ResumeGame();
+        else
+            PauseGame();
+    }
+
+    private void ResumeGame()
+    {
+        // Make the pause panel UI element visible.
+        _pausePanel.IsVisible = false;
     }
 
     private void PauseGame()

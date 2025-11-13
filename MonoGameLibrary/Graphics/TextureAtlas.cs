@@ -12,6 +12,7 @@ namespace MonoGameLibrary.Graphics;
 
 public class TextureAtlas 
 {
+    private Dictionary<string, Texture2D> _textures;
     private Dictionary<string, TextureRegion> _regions;
     private Dictionary<string, Animation> _animations;
 
@@ -20,6 +21,7 @@ public class TextureAtlas
     /// </summary>
     public TextureAtlas()
     {
+        _textures = new Dictionary<string, Texture2D>();
         _regions = new Dictionary<string, TextureRegion>();
         _animations = new Dictionary<string, Animation>();
     }
@@ -55,12 +57,16 @@ public class TextureAtlas
                 // So we retrieve all of the <Region> elements then loop through each one
                 // and generate a new TextureRegion instance from it and add it to this atlas.
                 foreach (var _regions in root.Elements("Regions") ?? Enumerable.Empty<XElement>()) {
-                    var regions = _regions?.Elements("Region") ?? Enumerable.Empty<XElement>();
-                    var texture = content.Load<Texture2D>(_regions.Attribute("texture").Value);
+                    string texname = _regions.Attribute("texture").Value;
+                    Texture2D texture = content.Load<Texture2D>(texname);
+                    atlas.AddTexture(texname, texture);
+
+                    var regions = _regions?.Elements("Region")
+                                    ?? Enumerable.Empty<XElement>();
 
                     foreach (var region in regions)
                     {
-                        string name = region.Attribute("name")?.Value;
+                        string name = region.Attribute("name").Value;
                         int offsetX = int.Parse(region.Attribute("offsetX")?.Value ?? "0");
                         int offsetY = int.Parse(region.Attribute("offsetY")?.Value ?? "0");
                         int x = int.Parse(region.Attribute("x")?.Value ?? "0");
@@ -68,10 +74,7 @@ public class TextureAtlas
                         int width = int.Parse(region.Attribute("width")?.Value ?? "0");
                         int height = int.Parse(region.Attribute("height")?.Value ?? "0");
 
-                        if (!string.IsNullOrEmpty(name))
-                        {
-                            atlas.AddRegion(texture, name, offsetX, offsetY, x, y, width, height);
-                        }
+                        atlas.AddRegion(texture, name, offsetX, offsetY, x, y, width, height);
                     }
                 }
 
@@ -117,6 +120,16 @@ public class TextureAtlas
         }
     }
 
+    public void AddTexture(string key, Texture2D value)
+    {
+        _textures.Add(key, value);
+    }
+
+    public Texture2D GetTexture(string name)
+    {
+        return _textures[name];
+    }
+
     /// <summary>
     /// Creates a new region and adds it to this texture atlas.
     /// </summary>
@@ -159,25 +172,6 @@ public class TextureAtlas
     public Animation GetAnimation(string animationName)
     {
         return _animations[animationName];
-    }
-
-    /// <summary>
-    /// Removes the animation with the specified name from this texture atlas.
-    /// </summary>
-    /// <param name="animationName">The name of the animation to remove.</param>
-    /// <returns>true if the animation is removed successfully; otherwise, false.</returns>
-    public bool RemoveAnimation(string animationName)
-    {
-        return _animations.Remove(animationName);
-    }
-
-    /// <summary>
-    /// Removes all regions from this texture atlas.
-    /// </summary>
-    public void Clear()
-    {
-        _regions.Clear();
-        _animations.Clear();
     }
 
     /// <summary>
