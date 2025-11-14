@@ -5,6 +5,15 @@
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
+    <!-- Needs Visual Studio C++
+    <PublishAot>true</PublishAot>
+    -->
+    <SelfContained>true</SelfContained>
+    <!-- Some libraries do not support this
+    <PublishTrimmed>true</PublishTrimmed>
+    -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
