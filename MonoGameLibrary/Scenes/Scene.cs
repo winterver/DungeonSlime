@@ -36,11 +36,6 @@ public abstract class Scene : IDisposable
     public static AudioController Audio => Core.Audio;
 
     /// <summary>
-    /// Redirected to Core.ExitOnEscape
-    /// </summary>
-    public static bool ExitOnEscape => Core.ExitOnEscape;
-
-    /// <summary>
     /// Redirected to Core.ChangeScene()
     /// </summary>
     public static void ChangeScene(Scene next) => Core.ChangeScene(next);
